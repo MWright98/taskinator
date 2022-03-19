@@ -41,8 +41,7 @@ if (isEdit) {
 
 var createTaskEl = function(taskDataObj) {
 
-    console.log(taskDataObj);
-console.log(taskDataObj.status);
+    
     //create list item
     var listItemEl = document.createElement("li");
     listItemEl.className = "task-item";
@@ -72,6 +71,7 @@ console.log(taskDataObj.status);
 
     //increase task counter for unique id
     taskIdCounter++;
+    saveTasks()
 }
 
 var createTaskActions = function(taskId) {
@@ -151,10 +151,10 @@ var deleteTask = function(taskId) {
 
     // reassign tasks array to be the same as updatedTaskArr
     tasks = updatedTaskArr;
+    saveTasks()
 };
 
 var editTask = function(taskId) {
-    console.log("editing task #" + taskId);
   
     // get task list item element
     var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
@@ -189,6 +189,7 @@ var completeEditTask = function(taskName, taskType, taskId) {
         alert("Task Updated!");
         formEl.removeAttribute("data-task-id");
         document.querySelector("#save-task").textContent = "Add Task";
+        saveTasks()
   };
 
 var taskStatusChangeHandler = function(event) {
@@ -221,8 +222,13 @@ for (var i = 0; i < tasks.length; i++) {
       tasks[i].status = statusValue;
     }
   }
-    console.log(tasks);
-  };
+    
+    saveTasks()
+};
+
+  var saveTasks = function() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
 
 formEl.addEventListener("submit", taskFormHandler);
 pageContentEl.addEventListener("click", taskButtonHandler);
